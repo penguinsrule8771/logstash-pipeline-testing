@@ -1,0 +1,34 @@
+version: '3'
+services:
+  elasticsearch:
+    image: "elasticsearch78"
+    container_name: "elasticsearch"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment: 
+      - "discovery.type=single-node"
+    networks:
+      - elastic
+  kibana:
+    image: "kibana78"
+    container_name: "kibana"
+    ports:
+      - "5601:5601"
+    networks:
+      - elastic
+  logstash:
+    image: "logstash78"
+    container_name: "logstash"
+    networks:
+      - elastic
+    volumes: 
+      - ./logs/test.log:/usr/share/logstash/testlogs/test.log
+      - ./pipeline/testing.conf:/usr/share/logstash/pipeline/testing.conf
+      - ./config/logstash.yml:/usr/share/logstash/config/logstash.yml
+
+networks:
+  elastic: 
+
+
+
